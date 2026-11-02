@@ -23,6 +23,18 @@ demonstrated instead of only described.
 
 ## 1. What this is
 
+> ### ▶ Live demo
+>
+> **<http://113.44.246.242:18080>** — deployed on a 2 vCPU / 2 GB Debian 12 host, running from a
+> single jar behind systemd. There is no registered domain, so it answers on a high port over
+> plain HTTP.
+>
+> Sign in with any seeded account, for example **`lead` / `Lead@123`** (Overall Lead) or
+> **`yunteng` / `Member@123`** (Team Member, S04 toolbox). The full list is on the sign-in page.
+>
+> This is a demo instance: treat the credentials as public and do not put anything sensitive in
+> it. Sizing rationale and the deployment procedure: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
 The case study asks for a smart working management app for small teams: one shared dashboard
 for tasks, deadlines, conversations, files and the productivity tools a team needs. This
 repository implements that app:

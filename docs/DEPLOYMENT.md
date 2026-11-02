@@ -3,7 +3,39 @@
 How to run the STC Platform on a server, and how much machine it actually needs.
 
 The figures below are **measured**, not guessed: they come from the release build running on
-Windows with `-Xms128m -Xmx256m -XX:+UseSerialGC` (see *Measured footprint*).
+Windows with `-Xms128m -Xmx256m -XX:+UseSerialGC` (see *Measured footprint*), and from the live
+deployment described in *Reference deployment*.
+
+---
+
+## 0. Reference deployment (this project's live demo)
+
+| Item | Value |
+| --- | --- |
+| URL | **<http://113.44.246.242:18080>** |
+| Host | 2 vCPU / 1.8 GB RAM / 40 GB disk, Debian 12 (bookworm), x86_64 |
+| Runtime | OpenJDK 17 (`openjdk-17-jre-headless`), jar built for Java 8 |
+| Process manager | systemd unit `/etc/systemd/system/sstc.service` (`Restart=always`) |
+| Layout | `/opt/sstc/sstc-platform.jar`, `/opt/sstc/data` (H2), `/opt/sstc/logs/app.log` |
+| JVM flags | `-Xms128m -Xmx512m -XX:+UseSerialGC -XX:MaxMetaspaceSize=192m -Dfile.encoding=UTF-8` |
+| Flags | `--server.port=18080 --spring.h2.console.enabled=false --sstc.seed.reset=false` |
+| Measured resident memory | **266 MB** at rest with the demo data loaded |
+| Domain | none registered, so the service is exposed on a high port over plain HTTP |
+
+Exposure note: the host answers on port 18080 directly (no reverse proxy, no TLS). That is
+acceptable for a teaching demo whose credentials are public, but any real use should put nginx and
+a certificate in front of it and stop publishing the high port.
+
+Update procedure used on that host:
+
+```bash
+# from the workstation
+mvn -DskipTests package
+pscp backend/target/sstc-platform.jar root@HOST:/opt/sstc/sstc-platform.jar
+
+# on the server
+systemctl restart sstc && curl -s localhost:18080/api/health
+```
 
 ---
 
@@ -13,7 +45,8 @@ Windows with `-Xms128m -Xmx256m -XX:+UseSerialGC` (see *Measured footprint*).
 
 | Metric | Value | How it was measured |
 | --- | --- | --- |
-| Idle resident memory | **≈ 300 MB** | JVM with a 256 MB heap cap, after startup and seeding |
+| Idle resident memory (Windows, capped heap) | **≈ 300 MB** | JVM with a 256 MB heap cap, after startup and seeding |
+| Resident memory on the Linux demo host | **266 MB** | `systemctl show sstc -p MemoryCurrent`, demo data loaded |
 | Resident memory after 250 requests | **≈ 420 MB** | 250 sequential calls across 5 endpoints |
 | Memory growth under load | ≈ +20 MB per 200 concurrent requests | No leak visible over the measured window |
 | Heap you should allow | 256–512 MB (`-Xmx`) | The workload is CRUD over a small dataset |

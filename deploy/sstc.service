@@ -1,0 +1,20 @@
+[Unit]
+Description=STC Platform (Small Team Collaboration, S01-S04 reference implementation)
+Documentation=https://github.com/HsGalaxy/sstc-sa-demo
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/sstc
+Environment="JAVA_OPTS=-Xms128m -Xmx512m -XX:+UseSerialGC -XX:MaxMetaspaceSize=192m -Dfile.encoding=UTF-8"
+ExecStart=/usr/bin/java $JAVA_OPTS -jar /opt/sstc/sstc-platform.jar --server.port=18080 --spring.h2.console.enabled=false
+SuccessExitStatus=143
+Restart=always
+RestartSec=5
+StandardOutput=append:/opt/sstc/logs/app.log
+StandardError=append:/opt/sstc/logs/app.log
+
+[Install]
+WantedBy=multi-user.target
