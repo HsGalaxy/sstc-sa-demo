@@ -40,19 +40,61 @@ OpenAPI documentation and the H2 console.
 
 ## 2. Screens
 
-| Dashboard | Kanban board |
-| --- | --- |
-| ![Dashboard](docs/screenshots/overview.png) | ![Kanban board](docs/screenshots/tasks.png) |
+Seventeen screens across the four sub-systems, captured from the running build with headless
+Chrome (`scripts/capture-screenshots.mjs`). Every screen names the user story and the Level-3
+component it exercises.
 
-| Channels & @mentions | AI meeting summary |
+### Overview and architecture map
+
+| Dashboard — aggregated indicators of all four sub-systems | Architecture map — C4 → code, tables and endpoints |
+| --- | --- |
+| ![Dashboard](docs/screenshots/overview.png) | ![Architecture map](docs/screenshots/architecture.png) |
+
+### S02 · Task Dashboard
+
+| Kanban board — drag and drop between columns | File tracker — multi-condition query and version history |
+| --- | --- |
+| ![Kanban board](docs/screenshots/tasks.png) | ![File tracker](docs/screenshots/files.png) |
+
+| OKR, indicators and performance score | Operation log — full lifecycle events |
+| --- | --- |
+| ![OKR and performance](docs/screenshots/okr.png) | ![Operation log](docs/screenshots/operations.png) |
+
+### S03 · Team Collaboration
+
+| Channels, group chat and @mentions | Meetings, transcript and AI summary |
 | --- | --- |
 | ![Collaboration](docs/screenshots/collaboration.png) | ![Meetings](docs/screenshots/meetings.png) |
 
-| Toolbox documents | Access audit |
-| --- | --- |
-| ![Documents](docs/screenshots/toolbox-documents.png) | ![Access audit](docs/screenshots/identity-audit.png) |
+| Notifications and ranked smart digest |
+| --- |
+| ![Inbox and digest](docs/screenshots/inbox.png) |
 
-All 17 captured screens live in [`docs/screenshots`](docs/screenshots).
+### S04 · Toolbox
+
+| Documents — editing with the Office API quota check | Presentations — slides of a deck |
+| --- | --- |
+| ![Documents](docs/screenshots/toolbox-documents.png) | ![Presentations](docs/screenshots/toolbox-presentations.png) |
+
+| Git repositories — commit history and publishing | Dev environments — container runtime |
+| --- | --- |
+| ![Git repositories](docs/screenshots/toolbox-repos.png) | ![Dev environments](docs/screenshots/toolbox-environments.png) |
+
+| Project files — upload, status and share links |
+| --- |
+| ![Project files](docs/screenshots/toolbox-files.png) |
+
+### S01 · Identity, Role & Access
+
+| Accounts, roles and effective permissions | Permission policies — GRANT / REVOKE overrides |
+| --- | --- |
+| ![Accounts](docs/screenshots/identity-users.png) | ![Policies](docs/screenshots/identity-policies.png) |
+
+| Access audit — every authorization decision |
+| --- |
+| ![Access audit](docs/screenshots/identity-audit.png) |
+
+All originals live in [`docs/screenshots`](docs/screenshots).
 
 ## 3. Quick start
 
@@ -142,6 +184,7 @@ S03 Team Collaboration                 ├─ DisplayPanel            (US05)
 * Full mapping, endpoint inventory and the sequence-diagram scenarios: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 * Complete REST reference: [`docs/API.md`](docs/API.md)
 * Ten minute walkthrough for the presentation: [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md)
+* Deployment on a server (sizing, systemd, Docker, reverse proxy, backup): [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)
 
 ## 5. Tech stack
 

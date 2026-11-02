@@ -1,0 +1,39 @@
+# ---------------------------------------------------------------------------
+# STC Platform - single service deployment.
+#   docker compose up -d --build
+#   docker compose logs -f
+# The application is bound to localhost only; put nginx (or any reverse proxy)
+# in front of it. See docs/DEPLOYMENT.md.
+# ---------------------------------------------------------------------------
+services:
+  sstc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sstc-platform:1.0.0
+    container_name: sstc
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      # the whole state is the H2 database file in here
+      - ./data:/app/data
+    environment:
+      JAVA_OPTS: "-Xms128m -Xmx512m -XX:+UseSerialGC"
+      # keep the database console private in production
+      SPRING_H2_CONSOLE_ENABLED: "false"
+      # match this with client_max_body_size in nginx
+      SSTC_TOOLBOX_STORAGE_MAXUPLOADMB: "25"
+    # keeps the container inside the budget of a 2 GB host
+    mem_limit: 900m
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 45s
+      retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
