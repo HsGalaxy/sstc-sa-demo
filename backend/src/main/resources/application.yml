@@ -1,0 +1,89 @@
+# ---------------------------------------------------------------------------
+# STC Platform - runtime configuration (default profile = local demo)
+# ---------------------------------------------------------------------------
+server:
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: application/json,text/html,text/css,application/javascript
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: sstc-platform
+  datasource:
+    # File based H2 database, created automatically in ./data on first start.
+    # AUTO_SERVER lets a second process (for example the H2 console) attach to the same file.
+    url: jdbc:h2:file:./data/sstc;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sstc
+    password: sstc
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: Asia/Shanghai
+    show-sql: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+# ---------------------------------------------------------------------------
+# Application specific settings
+# ---------------------------------------------------------------------------
+sstc:
+  # demo seeding: creates the STC demo team, users, tasks, files, chat, etc.
+  seed:
+    enabled: true
+    reset: false
+  security:
+    # demo token lifetime in hours
+    token-ttl-hours: 12
+    # accounts allowed to call /api/admin/**
+    bootstrap-admin: lead@stc.dev
+  toolbox:
+    # simulated external integrations used by the Toolbox sub-system (S04)
+    office:
+      provider: Microsoft 365 (simulated)
+      quota-per-day: 200
+    git:
+      provider: GitHub (simulated)
+      default-branch: main
+    container:
+      runtime: Docker (simulated)
+      max-environments: 12
+    storage:
+      provider: Local object storage (simulated)
+      max-upload-mb: 25
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    root: INFO
+    com.sstc.platform: INFO
+    org.hibernate.SQL: WARN

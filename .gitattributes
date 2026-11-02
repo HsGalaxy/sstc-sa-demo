@@ -1,0 +1,16 @@
+# Normalise line endings so the repository stays consistent across Windows, macOS and Linux.
+* text=auto eol=lf
+
+# Windows specific helpers keep their CRLF endings.
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary artefacts.
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.zip binary
+*.pdf binary
